@@ -3,7 +3,10 @@ package com.wangjt.jsandjsbridgetest;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.util.Log;
 import android.view.ViewGroup;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -12,6 +15,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 /**
  * Created by wangjt on 2017/8/16.
@@ -54,12 +58,18 @@ public class WebSettingUtil {
     }
 
 
-    public static void addWebViewClient(WebView webView) {
+    public static void addWebViewClient(final WebView webView) {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
+                Log.d("asdasd", "shouldOverrideUrlLoading: " + url);
+                Toast.makeText(webView.getContext(), "js::document.location", Toast.LENGTH_SHORT).show();
                 return true;
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return super.shouldOverrideUrlLoading(view, request);
             }
 
             @Override
@@ -117,8 +127,6 @@ public class WebSettingUtil {
             @Override
             public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
                 return super.onShowFileChooser(webView, filePathCallback, fileChooserParams);
-
-
             }
 
             @Override  //网页加载进度
@@ -129,6 +137,21 @@ public class WebSettingUtil {
             @Override  //网页标题
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
+            }
+
+            @Override  //js弹窗时候调用
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                return super.onJsAlert(view, url, message, result);
+            }
+
+            @Override
+            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+                return super.onJsPrompt(view, url, message, defaultValue, result);
+            }
+
+            @Override
+            public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+                return super.onJsConfirm(view, url, message, result);
             }
         });
     }
@@ -147,5 +170,16 @@ public class WebSettingUtil {
         ((ViewGroup) (webView.getParent())).removeView(webView);
         webView.destroy();
         webView = null;
+    }
+
+    //建议使用一个对象, 统一管理js 调用的 android 函数 ,
+
+    /**
+     * @param webView    webView
+     * @param object     对象 , 对象的成员方法被@ JavaScriptInterface 注解
+     * @param objectName 对象名称 ,被映射到 js 函数中, 可以直接调用 android 函数
+     */
+    public static void addjavainterFace(WebView webView, Object object, String objectName) {
+        webView.addJavascriptInterface(object, objectName);
     }
 }

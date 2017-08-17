@@ -1,10 +1,15 @@
 package com.wangjt.jsandjsbridgetest;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,7 +42,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         WebSettingUtil.setWebView(webView);
         WebSettingUtil.addWebViewClient(webView);
         WebSettingUtil.addWebChromeClient(webView);
-        WebSettingUtil.loadUrl(webView, "http://www.walden-wang.cn/simple.html");
+        WebSettingUtil.loadUrl(webView, "http://www.walden-wang.cn/js_android.html");
+        WebSettingUtil.addjavainterFace(webView, this, "android");
+
+
     }
 
     @Override
@@ -47,19 +55,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.bt_1:
                 webView.loadUrl("javascript:changeImage1()");
                 break;
-            case R.id.bt_2:
-                webView.loadUrl("javascript:changeImage2()");
+            case R.id.bt_2:  // 能接收js 函数的返回值
+                webView.evaluateJavascript("javascript:changeImage2()", new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String value) {
+                        Log.d("asdasd", "onReceiveValue: " + value);
+                    }
+                });
                 break;
-            case R.id.bt_3:  //
+            case R.id.bt_3:  // 更改文字
                 long time = System.currentTimeMillis();
                 Date date = new Date(time);
                 SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 String timeStr = format.format(date);
                 webView.loadUrl("javascript:changeText('" + timeStr + "')");  //改文字要用单引号
                 break;
-            case R.id.bt_4:  //
+            case R.id.bt_4:  // 弹框
                 webView.loadUrl("javascript:showDialog()");
                 break;
+            case R.id.bt5:
+                webView.loadUrl("");
+                break;
+            case R.id.j_A_1:
+                //Android类对象映射到js的test对象
+                // webView.addJavascriptInterface(this, "test");
+
+                break;
+
         }
     }
 
@@ -88,4 +110,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    @JavascriptInterface
+    public void callToast(String str) {
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+        webView.setBackgroundColor(Color.parseColor("#55aa4466"));
+    }
+
+    @JavascriptInterface
+    public void jsCallAndroid(final String str) {
+        webView.setBackgroundColor(Color.parseColor("#55ceffc2"));
+    }
+
 }

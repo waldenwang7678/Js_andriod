@@ -34,14 +34,14 @@
             android:id="@+id/bt_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="js_1"
+            android:text="img_1"
             android:textAllCaps="false" />
 
         <Button
             android:id="@+id/bt_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="js_2"
+            android:text="img_2"
             android:textAllCaps="false" />
 
         <Button
@@ -59,6 +59,19 @@
             android:textAllCaps="false" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,28 +85,28 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/bt5"
+            android:id="@+id/j_A_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="bt5"
+            android:text="J_A_1"
             android:textAllCaps="false" />
 
         <Button
-            android:id="@+id/bt6"
+            android:id="@+id/j_A_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="bt6"
             android:textAllCaps="false" />
 
         <Button
-            android:id="@+id/bt7"
+            android:id="@+id/j_A_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="bt7"
             android:textAllCaps="false" />
 
         <Button
-            android:id="@+id/bt8"
+            android:id="@+id/j_A_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="bt8"
