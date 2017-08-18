@@ -19,6 +19,7 @@ import static android.view.KeyEvent.KEYCODE_BACK;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private WebView webView;
+    private String jsCodeStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +27,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initView();
         initWebView();
+        initData();
+
     }
 
+    private void initData() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("var asd = document.getElementById(\"text_1\").innerHTML=\"动态添加jsCode\";");
+        builder.append("var img = document.getElementById(\"cc\");");
+        builder.append("var sss = img.src=\"image/head_img.jpg\";img.width=600; img.height=400;");
+        //builder.append("var width = img.width=600; img.height=800;");
+
+        jsCodeStr = builder.toString();
+//        jsCodeStr = "var sdf="+FileUtils.readFile(this, "test.js");
+//      sCodeStr="alert()";
+    }
 
     private void initView() {
         webView = (WebView) findViewById(R.id.webview);
@@ -35,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.bt_2).setOnClickListener(this);
         findViewById(R.id.bt_3).setOnClickListener(this);
         findViewById(R.id.bt_4).setOnClickListener(this);
+        findViewById(R.id.bt_5).setOnClickListener(this);
+        findViewById(R.id.j_A_1).setOnClickListener(this);
 
     }
 
@@ -73,13 +89,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.bt_4:  // 弹框
                 webView.loadUrl("javascript:showDialog()");
                 break;
-            case R.id.bt5:
-                webView.loadUrl("");
+            case R.id.bt_5:
+                webView.loadUrl("javascript:" + jsCodeStr);
                 break;
             case R.id.j_A_1:
                 //Android类对象映射到js的test对象
                 // webView.addJavascriptInterface(this, "test");
-
+                Toast.makeText(this, "请点击网页上的按钮", Toast.LENGTH_SHORT).show();
                 break;
 
         }
@@ -121,5 +137,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void jsCallAndroid(final String str) {
         webView.setBackgroundColor(Color.parseColor("#55ceffc2"));
     }
+
 
 }
