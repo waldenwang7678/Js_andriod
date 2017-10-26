@@ -1,6 +1,8 @@
 package com.wangjt.jsandjsbridgetest;
 
+import android.annotation.TargetApi;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -37,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.append("var img = document.getElementById(\"cc\");");
         builder.append("var sss = img.src=\"image/head_img.jpg\";img.width=600; img.height=400;");
         //builder.append("var width = img.width=600; img.height=800;");
-
         jsCodeStr = builder.toString();
 //        jsCodeStr = "var sdf="+FileUtils.readFile(this, "test.js");
 //      sCodeStr="alert()";
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View view) {
 
@@ -108,12 +110,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onResume() {
         super.onResume();
         webView.onResume();
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onPause() {
         super.onPause();
@@ -149,11 +153,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void imageClick1(final String str) {
         Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
     }
-
-    @JavascriptInterface
-    public void imageClick2(final String str) {
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-    }
-
-
 }
