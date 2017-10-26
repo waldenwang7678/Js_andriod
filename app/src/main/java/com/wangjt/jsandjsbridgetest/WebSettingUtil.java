@@ -17,6 +17,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.wangjt.jsandjsbridgetest.viewinterface.IView;
+
 /**
  * Created by wangjt on 2017/8/16.
  * webView 设置
@@ -58,7 +60,7 @@ public class WebSettingUtil {
     }
 
 
-    public static void addWebViewClient(final WebView webView) {
+    public static void addWebViewClient(final WebView webView, final IView iView) {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -81,6 +83,7 @@ public class WebSettingUtil {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                iView.loadLs();
             }
 
             @Override

@@ -13,15 +13,18 @@ import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import com.wangjt.jsandjsbridgetest.viewinterface.IView;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static android.view.KeyEvent.KEYCODE_BACK;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, IView {
 
     private WebView webView;
     private String jsCodeStr;
+    private String jsCodeInsert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +37,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initData() {
+
         StringBuilder builder = new StringBuilder();
         builder.append("var asd = document.getElementById(\"text_1\").innerHTML=\"动态添加jsCode\";");
         builder.append("var img = document.getElementById(\"cc\");");
         builder.append("var sss = img.src=\"image/head_img.jpg\";img.width=600; img.height=400;");
         //builder.append("var width = img.width=600; img.height=800;");
         jsCodeStr = builder.toString();
-//        jsCodeStr = "var sdf="+FileUtils.readFile(this, "test.js");
-//      sCodeStr="alert()";
 
+        // 读取文件中的 js 代码
+        // jsCodeStr = "var sdf=" + FileUtils.readFile(this, "test.js");
 
+        //添加H5图片点击事件
         StringBuilder builder1 = new StringBuilder();   //给图片添加点击事件
-        builder1.append("var img=document.getElementById(\"cc\");");
-        builder1.append("var click=img.onclick=(function click(){ })");
-
+        builder1.append("var img=document.getElementById(\"ccc\");");
+        builder1.append("var click=img.onclick=function click(){ " +
+                "img_click1()" +
+                "};");
+        jsCodeInsert = "javascript:" + builder1.toString();
 
     }
 
@@ -64,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initWebView() {
         WebSettingUtil.setWebView(webView);
-        WebSettingUtil.addWebViewClient(webView);
+        WebSettingUtil.addWebViewClient(webView, this);
         WebSettingUtil.addWebChromeClient(webView);
         WebSettingUtil.loadUrl(webView, "http://www.walden-wang.cn/js_android.html");
         WebSettingUtil.addjavainterFace(webView, this, "android");
@@ -152,5 +159,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @JavascriptInterface
     public void imageClick1(final String str) {
         Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void loadLs() {
+        webView.loadUrl(jsCodeInsert);
     }
 }

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>jsTest</title>
+    <script src="jquery-3.2.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#ccc").click(function () {
+                document.getElementById("ccc").src = "image/aaa.jpeg";
+            });
+            $("#ccc").click(function () {
+                img_click1();
+            });
+            $("#ccc").click(function () {
+                img_click2();
+            });
+        });
+    </script>
+    <script>
+        function changeImage1() {  //更换图片
+            var image = document.getElementById("ccc");
+            image.src = "image/aaa.jpeg";
+        }
+
+        function changeImage2() { //更换图片
+            var image = document.getElementById("ccc");
+            image.src = "image/cc.jpg";
+            return "cc.jpg";
+        }
+
+        function changeText(str) {
+            var text = document.getElementById("text_1");
+            text.innerHTML = str;
+        }
+
+        function showDialog() {
+            alert("js::alert提示框")
+        }
+
+        function callAndroid() {
+            android.jsCallAndroid("js调用了android中的hello方法");
+        }
+
+        function showToast() {
+            var asd = 3;
+            window.android.callToast(asd);
+        }
+
+        function callAndroid2() {
+            document.location = "js://webview?arg1=111&arg2=222";
+        }
+
+        function showAlert() {
+            var result = alert("js://demo?arg1=111&arg2=222");
+            //alert(result);
+        }
+
+        function showPrompt() {
+            var result = prompt("js://demo?arg1=111&arg2=222");
+            //alert(result);
+        }
+
+        function showConfirm() {
+            var result = confirm("js://demo?arg1=111&arg2=222");
+            //alert(result);
+        }
+
+        function img_click_toast() {
+            window.android.imageClick1("点击图片");
+        }
+
+        function img_click1() {
+            document.getElementById("text_1").innerHTML = new Date().getMilliseconds();  //当前时间
+        }
+
+        function img_click2() {
+            document.getElementById("text_2").innerHTML = new Date().getMilliseconds() + 100;  //当前时间
+        }
+
+        function insertjscode() {
+            var img = document.getElementById("ccc");
+            img.onclick = function () {
+                alert("insert")
+            }
+        }
+
+    </script>
+    <style type="text/css">
+        button {
+            width: 300px;
+            height: 75px;
+            font-size: 30px;
+        }
+
+
+    </style>
+</head>
+<body>
+<table>
+    <tr>
+        <td><img width="500" height="400" id="ccc" src="image/cc.jpg" onclick="img_click_toast()"></td>
+    </tr>
+
+    <tr>
+        <td><span id="text_1" style="color: #FF0000;font-size: 50px">今天你好吗</span></td>
+    </tr>
+
+    <tr>
+        <td><span id="text_2" style="color: #FF0000;font-size: 50px">今天我不好</span></td>
+    </tr>
+
+
+    <tr>
+        <td>
+            <button type="button" id="button1" onclick="callAndroid()"> js 调 Android 函数</button>
+            <br>
+        </td>
+        <td>
+            <button type="button" id="button2" onclick="showToast()">弹出本地 Toast
+            </button>
+        </td>
+        <td>
+            <button type="button" id="button3" onclick="callAndroid2()">Url 拦截</button>
+            <!--在 webview 的 shouldLoadUrl-->
+        </td>
+    </tr>
+
+    <tr>
+
+        <td>
+            <button type="button" id="button4" onclick="showAlert()"> showAlert</button>
+        </td>
+        <td>
+            <button type="button" id="button5" onclick="showPrompt()"> showPrompt</button>
+        </td>
+        <td>
+            <button type="button" id="button6" onclick="showConfirm()"> showConfirm</button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button type="button" id="button7" onclick="insertjscode()">insertJsCode</button>
+        </td>
+
+
+    </tr>
+</table>
+
+
+</body>
+</html>
