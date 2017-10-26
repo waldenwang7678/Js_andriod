@@ -41,6 +41,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         jsCodeStr = builder.toString();
 //        jsCodeStr = "var sdf="+FileUtils.readFile(this, "test.js");
 //      sCodeStr="alert()";
+
+
+        StringBuilder builder1 = new StringBuilder();   //给图片添加点击事件
+        builder1.append("var img=document.getElementById(\"cc\");");
+        builder1.append("var click=img.onclick=(function click(){ })");
+
+
     }
 
     private void initView() {
@@ -136,6 +143,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @JavascriptInterface
     public void jsCallAndroid(final String str) {
         webView.setBackgroundColor(Color.parseColor("#55ceffc2"));
+    }
+
+    @JavascriptInterface
+    public void imageClick1(final String str) {
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+    }
+
+    @JavascriptInterface
+    public void imageClick2(final String str) {
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
     }
 
 

@@ -67,10 +67,10 @@ public class WebSettingUtil {
                 return true;
             }
 
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                return super.shouldOverrideUrlLoading(view, request);
-            }
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+//                return super.shouldOverrideUrlLoading(view, request);
+//            }
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
