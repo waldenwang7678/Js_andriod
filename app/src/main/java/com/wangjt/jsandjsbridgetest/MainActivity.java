@@ -137,13 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         WebSettingUtil.distoryWebView(webView);
     }
 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KEYCODE_BACK) && webView.canGoBack()) {
-            webView.goBack();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+
 
     @JavascriptInterface
     public void callToast(String str) {
@@ -164,5 +158,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void loadLs() {
         webView.loadUrl(jsCodeInsert);
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KEYCODE_BACK) && webView.canGoBack()) {
+            webView.goBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

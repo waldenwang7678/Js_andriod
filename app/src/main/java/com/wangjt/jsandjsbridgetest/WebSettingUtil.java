@@ -65,8 +65,8 @@ public class WebSettingUtil {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Log.d("asdasd", "shouldOverrideUrlLoading: " + url);
-                Toast.makeText(webView.getContext(), "js::document.location", Toast.LENGTH_SHORT).show();
-                return true;
+                Toast.makeText(webView.getContext(), url, Toast.LENGTH_SHORT).show();
+                return super.shouldOverrideUrlLoading(view, url);
             }
 
 //            @Override
