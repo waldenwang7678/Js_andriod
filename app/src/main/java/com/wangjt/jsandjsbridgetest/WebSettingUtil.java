@@ -1,8 +1,11 @@
 package com.wangjt.jsandjsbridgetest;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Build;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.webkit.JsPromptResult;
@@ -24,10 +27,11 @@ import com.wangjt.jsandjsbridgetest.viewinterface.IView;
  * webView 设置
  */
 
-public class WebSettingUtil {
+class WebSettingUtil {
 
 
-    public static void setWebView(WebView webView) {
+    @SuppressLint("SetJavaScriptEnabled")
+    static void setWebView(WebView webView) {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         //设置自适应屏幕
@@ -60,19 +64,17 @@ public class WebSettingUtil {
     }
 
 
-    public static void addWebViewClient(final WebView webView, final IView iView) {
+    static void addWebViewClient(final WebView webView, final IView iView) {
         webView.setWebViewClient(new WebViewClient() {
+
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                String url = request.getUrl().toString();
                 Log.d("asdasd", "shouldOverrideUrlLoading: " + url);
                 Toast.makeText(webView.getContext(), url, Toast.LENGTH_SHORT).show();
-                return super.shouldOverrideUrlLoading(view, url);
+                return super.shouldOverrideUrlLoading(view, request);
             }
-
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-//                return super.shouldOverrideUrlLoading(view, request);
-//            }
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -109,7 +111,7 @@ public class WebSettingUtil {
 
     }
 
-    public static void addWebChromeClient(WebView webView) {
+    static void addWebChromeClient(WebView webView) {
         webView.setWebChromeClient(new WebChromeClient() {
             // <3.0
             public void openFileChooser(ValueCallback<Uri> uploadMsg) {
@@ -117,7 +119,7 @@ public class WebSettingUtil {
             }
 
             // 3.0+
-            public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {
+            void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {
 
             }
 
@@ -159,14 +161,14 @@ public class WebSettingUtil {
         });
     }
 
-    public static void loadUrl(WebView webView, String url) {
+    static void loadUrl(WebView webView, String url) {
         webView.loadUrl(url);
 //        webView.loadUrl("http://www.google.com/");  //网络资源
 //        webView.loadUrl("file:///android_asset/test.html");//app html资源文件
 //        webView.loadUrl("content://com.android.htmlfileprovider/sdcard/test.html"); //设备本地地址
     }
 
-    public static void distoryWebView(WebView webView) {
+    static void distoryWebView(WebView webView) {
         webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);  //加载空内容
         webView.clearHistory();
         webView.clearCache(true);
@@ -178,11 +180,10 @@ public class WebSettingUtil {
     //建议使用一个对象, 统一管理js 调用的 android 函数 ,
 
     /**
-     * @param webView    webView
-     * @param object     对象 , 对象的成员方法被@ JavaScriptInterface 注解
-     * @param objectName 对象名称 ,被映射到 js 函数中, 可以直接调用 android 函数
+     * @param webView webView
+     * @param object  对象 , 对象的成员方法被@ JavaScriptInterface 注解
      */
-    public static void addjavainterFace(WebView webView, Object object, String objectName) {
-        webView.addJavascriptInterface(object, objectName);
+    public static void addjavainterFace(WebView webView, Object object) {
+        webView.addJavascriptInterface(object, "android");
     }
 }

@@ -1,5 +1,6 @@
 package com.wangjt.jsandjsbridgetest;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.graphics.Color;
 import android.os.Build;
@@ -20,6 +21,9 @@ import java.util.Date;
 
 import static android.view.KeyEvent.KEYCODE_BACK;
 
+/**
+ * @author wangjt
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, IView {
 
     private WebView webView;
@@ -38,35 +42,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initData() {
 
-        StringBuilder builder = new StringBuilder();
-        builder.append("var asd = document.getElementById(\"text_1\").innerHTML=\"动态添加jsCode\";");
-        builder.append("var img = document.getElementById(\"cc\");");
-        builder.append("var sss = img.src=\"image/head_img.jpg\";img.width=600; img.height=400;");
-        //builder.append("var width = img.width=600; img.height=800;");
-        jsCodeStr = builder.toString();
-
+        String jsStr = "var asd = document.getElementById(\"text_1\").innerHTML=\"动态添加jsCode\";" +
+                "var img = document.getElementById(\"cc\");" +
+                "var sss = img.src=\"image/head_img.jpg\";img.width=600; img.height=400;";
+        int len = jsStr.length();
+        jsCodeStr = jsStr;
         // 读取文件中的 js 代码
         // jsCodeStr = "var sdf=" + FileUtils.readFile(this, "test.js");
 
         //添加H5图片点击事件
-        StringBuilder builder1 = new StringBuilder();   //给图片添加点击事件
-        builder1.append("var img=document.getElementById(\"ccc\");");
-        builder1.append("var click=img.onclick=function click(){ " +
+        String builder1 = "var img=document.getElementById(\"ccc\");" +
+                "var click=img.onclick=function click(){ " +
                 "img_click1()" +
-                "};");
-        jsCodeInsert = "javascript:" + builder1.toString();
+                "};";
+        jsCodeInsert = "javascript:" + builder1;
 
     }
 
     private void initView() {
         webView = (WebView) findViewById(R.id.webview);
-        findViewById(R.id.bt_1).setOnClickListener(this);
-        findViewById(R.id.bt_2).setOnClickListener(this);
-        findViewById(R.id.bt_3).setOnClickListener(this);
-        findViewById(R.id.bt_4).setOnClickListener(this);
-        findViewById(R.id.bt_5).setOnClickListener(this);
-        findViewById(R.id.j_A_1).setOnClickListener(this);
-
+        View view1 = findViewById(R.id.bt_1);
+        if (view1 != null) {
+            view1.setOnClickListener(this);
+        }
+        View view2 = findViewById(R.id.bt_2);
+        if (view2 != null) {
+            view2.setOnClickListener(this);
+        }
+        View view3 = findViewById(R.id.bt_3);
+        if (view3 != null) {
+            view3.setOnClickListener(this);
+        }
+        View view4 = findViewById(R.id.bt_4);
+        if (view4 != null) {
+            view4.setOnClickListener(this);
+        }
+        View view5 = findViewById(R.id.bt_5);
+        if (view5 != null) {
+            view5.setOnClickListener(this);
+        }
+        View view = findViewById(R.id.j_A_1);
+        if (view != null) {
+            view.setOnClickListener(this);
+        }
     }
 
     private void initWebView() {
@@ -74,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         WebSettingUtil.addWebViewClient(webView, this);
         WebSettingUtil.addWebChromeClient(webView);
         WebSettingUtil.loadUrl(webView, "http://www.walden-wang.cn/js_android.html");
-        WebSettingUtil.addjavainterFace(webView, this, "android");
+        WebSettingUtil.addjavainterFace(webView, this);
 
 
     }
@@ -98,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.bt_3:  // 更改文字
                 long time = System.currentTimeMillis();
                 Date date = new Date(time);
-                SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 String timeStr = format.format(date);
                 webView.loadUrl("javascript:changeText('" + timeStr + "')");  //改文字要用单引号
                 break;
@@ -112,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Android类对象映射到js的test对象
                 // webView.addJavascriptInterface(this, "test");
                 Toast.makeText(this, "请点击网页上的按钮", Toast.LENGTH_SHORT).show();
+                break;
+            default:
                 break;
 
         }
@@ -138,7 +158,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     @JavascriptInterface
     public void callToast(String str) {
         Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
@@ -160,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         webView.loadUrl(jsCodeInsert);
     }
 
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KEYCODE_BACK) && webView.canGoBack()) {
             webView.goBack();
